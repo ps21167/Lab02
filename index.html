@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Hub - Delicious Recipes for Everyone</title>
+    <meta name="description" content="Discover thousands of delicious recipes - quick dinners, healthy meals, desserts, and more.">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #e74c3c;
+            --primary-dark: #c0392b;
+            --secondary: #f39c12;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --gray: #95a5a6;
+            --light-bg: #f8f9fa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&q=80') center/cover no-repeat;
+            height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 2rem;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .search-box {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            background: white;
+            border-radius: 50px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 1.2rem 1.5rem;
+            border: none;
+            font-size: 1.1rem;
+            outline: none;
+        }
+
+        .search-box button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0 2rem;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: background 0.3s;
+        }
+
+        .search-box button:hover {
+            background: var(--primary-dark);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        section {
+            margin-bottom: 6rem;
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--dark);
+        }
+
+        .recipes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .recipe-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .recipe-img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+
+        .recipe-info {
+            padding: 1.5rem;
+        }
+
+        .recipe-title {
+            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
+            color: var(--dark);
+        }
+
+        .recipe-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .recipe-meta i {
+            color: var(--primary);
+        }
+
+        .rating {
+            color: #f1c40f;
+        }
+
+        .view-recipe {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .view-recipe:hover {
+            background: var(--primary-dark);
+        }
+
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .category-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .category-card i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+
+        .footer-col h3 {
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-col a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-col a:hover {
+            color: var(--primary);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 3rem;
+            color: #95a5a6;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <a href="#" class="logo">Recipe Hub</a>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Recipes</a></li>
+                <li><a href="#">Categories</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Discover Amazing Recipes</h1>
+            <p>Thousands of delicious recipes for every occasion – from quick weeknight dinners to impressive weekend feasts.</p>
+            <div class="search-box">
+                <input type="text" placeholder="Search for recipes, ingredients...">
+                <button><i class="fas fa-search"></i> Search</button>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+
+        <section>
+            <h2>Featured Recipes</h2>
+            <div class="recipes-grid">
+                <!-- Recipe 1 -->
+                <div class="recipe-card">
+                    <img src="https://images.unsplash.com/photo-1621996346565-e3dbc44ae37d?ixlib=rb-4.0.3&auto=format&fit=crop&q=80" alt="Spaghetti Carbonara" class="recipe-img">
+                    <div class="recipe-info">
+                        <h3 class="recipe-title">Classic Spaghetti Carbonara</h3>
+                        <div class="recipe-meta">
+                            <span><i class="fas fa-clock"></i> 20 mins</span>
+                            <span><i class="fas fa-utensils"></i> Easy</span>
+                            <span class="rating"><i class="fas fa-star"></i> 4.9</span>
+                        </div>
+                        <button class="view-recipe">View Recipe</button>
+                    </div>
+                </div>
+
+                <!-- Recipe 2 -->
+                <div class="recipe-card">
+                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&auto=format&fit=crop&q=80" alt="Margherita Pizza" class="recipe-img">
+                    <div class="recipe-info">
+                        <h3 class="recipe-title">Homemade Margherita Pizza</h3>
+                        <div class="recipe-meta">
+                            <span><i class="fas fa-clock"></i> 45 mins</span>
+                            <span><i class="fas fa-utensils"></i> Medium</span>
+                            <span class="rating"><i class="fas fa-star"></i> 4.8</span>
+                        </div>
+                        <button class="view-recipe">View Recipe</button>
+                    </div>
+                </div>
+
+                <!-- Recipe 3 -->
+                <div class="recipe-card">
+                    <img src="https://images.unsplash.com/photo-1518779578993-ec3579fee39f?ixlib=rb-4.0.3&auto=format&fit=crop&q=80" alt="Chocolate Lava Cake" class="recipe-img">
+                    <div class="recipe-info">
+                        <h3 class="recipe-title">Molten Chocolate Lava Cake</h3>
+                        <div class="recipe-meta">
+                            <span><i class="fas fa-clock"></i> 30 mins</span>
+                            <span><i class="fas fa-utensils"></i> Medium</span>
+                            <span class="rating"><i class="fas fa-star"></i> 5.0</span>
+                        </div>
+                        <button class="view-recipe">View Recipe</button>
+                    </div>
+                </div>
+
+                <!-- Recipe 4 -->
+                <div class="recipe-card">
+                    <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-4.0.3&auto=format&fit=crop&q=80" alt="Healthy Buddha Bowl" class="recipe-img">
+                    <div class="recipe-info">
+                        <h3 class="recipe-title">Rainbow Buddha Bowl</h3>
+                        <div class="recipe-meta">
+                            <span><i class="fas fa-clock"></i> 25 mins</span>
+                            <span><i class="fas fa-utensils"></i> Easy</span>
+                            <span class="rating"><i class="fas fa-star"></i> 4.7</span>
+                        </div>
+                        <button class="view-recipe">View Recipe</button>
+                    </div>
+                </div>
+
+                <!-- Recipe 5 -->
+                <div class="recipe-card">
+                    <img src="https://images.unsplash.com/photo-1546837950-93f6b7cf77f3?ixlib=rb-4.0.3&auto=format&fit=crop&q=80" alt="Chicken Tikka Masala" class="recipe-img">
+                    <div class="recipe-info">
+                        <h3 class="recipe-title">Chicken Tikka Masala</h3>
+                        <div class="recipe-meta">
+                            <span><i class="fas fa-clock"></i> 50 mins</span>
+                            <span><i class="fas fa-utensils"></i> Medium</span>
+                            <span class="rating"><i class="fas fa-star"></i> 4.9</span>
+                        </div>
+                        <button class="view-recipe">View Recipe</button>
+                    </div>
+                </div>
+
+                <!-- Recipe 6 -->
+                <div class="recipe-card">
+                    <img src="https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?ixlib=rb-4.0.3&auto=format&fit=crop&q=80" alt="Avocado Toast" class="recipe-img">
+                    <div class="recipe-info">
+                        <h3 class="recipe-title">Perfect Avocado Toast 4 Ways</h3>
+                        <div class="recipe-meta">
+                            <span><i class="fas fa-clock"></i> 10 mins</span>
+                            <span><i class="fas fa-utensils"></i> Very Easy</span>
+                            <span class="rating"><i class="fas fa-star"></i> 4.8</span>
+                        </div>
+                        <button class="view-recipe">View Recipe</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Popular Categories</h2>
+            <div class="categories">
+                <div class="category-card">
+                    <i class="fas fa-utensils"></i>
+                    <h3>Dinner</h3>
+                </div>
+                <div class="category-card">
+                    <i class="fas fa-leaf"></i>
+                    <h3>Healthy</h3>
+                </div>
+                <div class="category-card">
+                    <i class="fas fa-birthday-cake"></i>
+                    <h3>Desserts</h3>
+                </div>
+                <div class="category-card">
+                    <i class="fas fa-clock"></i>
+                    <h3>Quick & Easy</h3>
+                </div>
+                <div class="category-card">
+                    <i class="fas fa-pepper-hot"></i>
+                    <h3>Vegetarian</h3>
+                </div>
+                <div class="category-card">
+                    <i class="fas fa-globe"></i>
+                    <h3>International</h3>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <h3>Recipe Hub</h3>
+                <p>Your ultimate destination for delicious recipes made with love.</p>
+            </div>
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Categories</h3>
+                <ul>
+                    <li><a href="#">Breakfast</a></li>
+                    <li><a href="#">Lunch</a></li>
+                    <li><a href="#">Dinner</a></li>
+                    <li><a href="#">Desserts</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Follow Us</h3>
+                <p>Stay updated with new recipes!</p>
+                <!-- Add social icons here if needed -->
+            </div>
+        </div>
+        <div class="copyright">
+            © 2025 Recipe Hub. All rights reserved. Made with ❤️ for food lovers.
+        </div>
+    </footer>
+
+</body>
+</html>
